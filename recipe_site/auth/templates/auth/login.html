@@ -1,0 +1,15 @@
+{% extends "recipes/base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>Вход</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Логин: <input type="text" name="username"></label><br>
+        <label>Пароль: <input type="password" name="password"></label><br>
+        <button type="submit">Войти</button>
+    </form>
+</div>
+{% endblock %}

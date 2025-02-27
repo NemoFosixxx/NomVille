@@ -1,0 +1,48 @@
+{% extends "recipes/layout.html" %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'recipes/css/recipes.css' %}">
+{% endblock styles %}
+{% block title %}Редактировать рецепт{% endblock %}
+{% load replace_filter %}
+
+{% block content %}
+<div class="container">
+    <div class="banner">
+        <header>
+            <h1>Сайт рецептов НямВилль</h1>
+            <nav style="margin-right: 17px;">
+                <a href="{% url 'index' %}">Главная</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_recipe' %}">Добавить рецепт</a>
+                    <a href="{% url 'logout' %}">Выход</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Вход</a>
+                    <a href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
+            </nav>
+        </header>
+    </div>
+    <div class="card p-4 shadow" style="margin-top: 20px;">
+        <h2 class="text-center mb-4">Редактировать рецепт</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Поля формы для остальных данных -->
+            {{ form.as_p }}
+    
+            <!-- Поле для ввода шагов -->
+            <div class="mb-3">
+                <label for="id_steps" class="form-label">Шаги приготовления</label>
+                <textarea name="steps" class="form-control" id="id_steps" rows="6" required>
+                    {% if recipe.steps %}
+                        {{ recipe.steps|replace_pipe_with_newline }}
+                    {% endif %}
+                </textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
