@@ -32,17 +32,25 @@ def add_recipe_view(request):
 
 @login_required
 def edit_recipe_view(request, recipe_id):
-    recipe = get_object_or_404(Recipe, id=recipe_id, author=request.user)
-    
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+
     if request.method == "POST":
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
-            form.save()
+            recipe = form.save(commit=False)
+            recipe.steps = "|".join(request.POST.getlist("steps"))  # Собираем ВСЕ шаги
+            recipe.save()
             return redirect("recipe_details", recipe_id=recipe.id)
     else:
         form = RecipeForm(instance=recipe)
 
-    return render(request, "recipes/edit_recipe.html", {"form": form, "recipe": recipe})
+    steps_list = recipe.steps.split("|") if recipe.steps else []  # Разбиваем шаги
+
+    return render(request, "recipes/edit_recipe.html", {
+        "form": form,
+        "recipe": recipe,
+        "steps": steps_list
+    })
 
 @login_required
 def delete_recipe_view(request, recipe_id):

@@ -3,8 +3,7 @@ from django import template
 register = template.Library()
 
 @register.filter
-def replace_pipe_with_newline(value):
-    """Заменяет символы '|' на новую строку."""
+def newline_to_pipe(value):
     if isinstance(value, str):
-        return value.replace('|', '\n')
+        return value.replace('\n', '|')
     return value
