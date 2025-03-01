@@ -11,8 +11,6 @@
         <h2 class="text-center mb-4">Редактировать рецепт</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-    
-            <!-- Если есть ошибки формы, выводим их -->
             {% if form.errors %}
                 <div class="alert alert-danger" role="alert">
                     <ul>
@@ -24,8 +22,6 @@
                     </ul>
                 </div>
             {% endif %}
-    
-            <!-- Поли формы, кроме шагов приготовления -->
             {% for field in form %}
                 {% if field.name != "steps" %}
                     <div class="mb-3">
@@ -41,8 +37,6 @@
                     </div>
                 {% endif %}
             {% endfor %}
-    
-            <!-- Шаги приготовления -->
             <div class="mb-3">
                 <label class="form-label">Шаги приготовления</label>
                 <div id="steps-container">

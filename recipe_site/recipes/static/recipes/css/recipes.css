@@ -98,11 +98,19 @@ main {
 
 .recipe-info {
     padding: 15px;
+    width: 280px;
+    height: 252.767px; /* Устанавливаем фиксированную высоту */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .recipe-info h3 {
     margin: 10px 0;
     font-size: 1.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Обрезаем текст, если он длинный */
 }
 
 .btn {

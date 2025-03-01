@@ -38,13 +38,13 @@ def edit_recipe_view(request, recipe_id):
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
             recipe = form.save(commit=False)
-            recipe.steps = "|".join(request.POST.getlist("steps"))  # Собираем ВСЕ шаги
+            recipe.steps = "|".join(request.POST.getlist("steps"))
             recipe.save()
             return redirect("recipe_details", recipe_id=recipe.id)
     else:
         form = RecipeForm(instance=recipe)
 
-    steps_list = recipe.steps.split("|") if recipe.steps else []  # Разбиваем шаги
+    steps_list = recipe.steps.split("|") if recipe.steps else []
 
     return render(request, "recipes/edit_recipe.html", {
         "form": form,
