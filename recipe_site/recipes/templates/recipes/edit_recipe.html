@@ -12,15 +12,37 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
     
-            {{ form.non_field_errors }}
+            <!-- Если есть ошибки формы, выводим их -->
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+    
+            <!-- Поли формы, кроме шагов приготовления -->
             {% for field in form %}
                 {% if field.name != "steps" %}
                     <div class="mb-3">
                         <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                        {{ field }}
+                        {{ field }}  <!-- Поле будет уже с классом form-control -->
+                        {% if field.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 {% endif %}
             {% endfor %}
+    
+            <!-- Шаги приготовления -->
             <div class="mb-3">
                 <label class="form-label">Шаги приготовления</label>
                 <div id="steps-container">
